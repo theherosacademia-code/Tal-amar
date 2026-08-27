@@ -53,6 +53,18 @@ Building from scratch produces something that looks *almost* right and is theref
 
 Off-system colors that appear in old decks and must go: `#002c66` (navy connector lines), `#dd1414` / `#c61b1b` / `#fa2828` (extra reds), rounded pills (`cornerRounding: 51`).
 
+### Settled — do not re-propose
+
+The tokens above are **fixed**. In Aug 2026 Tal reviewed and rejected a proposed
+redesign: an opaque cream caption box (`#FBF3D5`) replacing the translucent grey
+card, and normal-weight body copy. His decision: keep the existing design.
+Do not raise it again unless he asks.
+
+Also settled: a third type size for sub-headings is not achievable here.
+`format_text` applies to a whole text element, and headings live inline with
+their lists in a single element. It would need separate heading elements
+authored by hand in Canva.
+
 ## API traps — learned the hard way
 
 **`position_element` takes POST-rotation coordinates.** For a 90°-rotated element the stored `top`/`left` you read back are pre-rotation and differ by `(height − width) / 2`. To land the banner on its canonical stored values, pass `top: -637.73, left: -495.15`.
