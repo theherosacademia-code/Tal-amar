@@ -44,8 +44,8 @@ Building from scratch produces something that looks *almost* right and is theref
 |---|---|
 | Canvas | 1920×1080, white background |
 | Crimson banner | `#960b0b`, black stroke **6** |
-| Banner geometry | stored `top: -1620.99, left: 488.11, width: 852.73, height: 2819.25, rotation: 90` |
-| Banner visual span | y `0 → 215`, x `-495.15 → 2324.11` (it deliberately overhangs both edges) |
+| Banner geometry | stored `top: -1675.99, left: 543.11, width: 742.73, height: 2819.25, rotation: 90` |
+| Banner visual span | y `0 → 105`, x `-495.15 → 2324.11` (it deliberately overhangs both edges) |
 | Title text | `YAGRfpd9t4I` · 128.014px · bold + italic · `#ffffff` · lineHeight 1 · **`top: 21.1` on every content page** · `left 30.59, width 1840.12` (align start) or `left 39.94` (align center) |
 | Body text | `YAG2sxXkTBU` · 36.4px · bold · `#000000` · lineHeight 1.74 |
 | Grey card | `#d5d3d4` at opacity **0.21**, black stroke **4**, cornerRounding **0** |
@@ -78,29 +78,33 @@ authored by hand in Canva.
 
 **Video works.** `update_fill` with `asset_type: "video"` swaps an uploaded Canva video. Tal edits and uploads his own videos — never offer to generate them.
 
-### The banner must enclose the title — non-negotiable
+### The banner CUTS the title — non-negotiable
 
-Tal fixed this as design language in Aug 2026. The crimson banner has to fully
-contain the white outlined title on **every** page of **every** deck. Older decks
-ship with banners that are too short — a title's black outline hanging below the
-red edge is the tell.
+Tal fixed this as design language in Aug 2026, and it is the single detail he has
+corrected most. The crimson banner's bottom edge must **slice through the middle of
+the title**: the upper half of the letterforms sits on crimson, the lower half on
+white. It is not a container. Do not "fix" a title that hangs below the bar — that
+is the design.
+
+This is what the black outline on the white title is *for*. It is the only reason
+the lower half stays legible once it crosses onto the white page. The outline and
+the cut are one idea; neither works alone.
 
 The arithmetic, because it is not obvious: the banner is rotated 90°, so the
-*stored* `width` is what you see as its height, and its visible bottom edge sits at
-`stored_width − 637.73`. The title's glyph ink reaches about `top + 128`. At the old
-width of 822.29 the bar bottomed out at 184.6 and the ink cleared it; at 762.62
-(which some Iron Man pages carry) it bottomed at 124.9 and the title spilled out.
+*stored* `width` is what you see as its height, and its visible bottom edge lands at
+`stored_width − 637.73`. The title's glyph ink runs roughly `y 51 → 153`, so the cut
+wants to be at ~105 — hence a stored width of **742.73**.
 
-The fix, applied per page as two ops in one call:
+Applied per page as two ops in one call:
 
 ```
-resize_element   width: 852.73, height: 2819.25     ← element-local, so resize first
+resize_element   width: 742.73, height: 2819.25     ← element-local, so resize first
 position_element top: -637.73, left: -495.15        ← POST-rotation bounding box
 ```
 
-That lands the bar at `y 0 → 215`, clearing the deepest title by ~30px. Also set
-every content-page title to `top: 21.1` — pages copied from different Iron Man
-layouts arrive at 31.2 or 31.45 and read as misaligned once the bars match.
+Also set every content-page title to `top: 21.1` — pages copied from different Iron
+Man layouts arrive at 31.2 or 31.45, which puts the cut in a different place on each
+slide and reads as sloppy.
 
 Leave **page 1 alone**. The cover is a different composition — the title sits on the
 Marvel pattern between two angular red blocks, not on the banner.
