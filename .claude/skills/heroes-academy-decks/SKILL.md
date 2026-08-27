@@ -46,7 +46,9 @@ Building from scratch produces something that looks *almost* right and is theref
 | Crimson banner | `#960b0b`, black stroke **6** |
 | Banner geometry | stored `top: -1675.99, left: 543.11, width: 742.73, height: 2819.25, rotation: 90` |
 | Banner visual span | y `0 → 105`, x `-495.15 → 2324.11` (it deliberately overhangs both edges) |
-| Title text | `YAGRfpd9t4I` · 128.014px · bold + italic · `#ffffff` · lineHeight 1 · **`top: 21.1` on every content page** · `left 30.59, width 1840.12` (align start) or `left 39.94` (align center) |
+| Title text | `YAGRfpd9t4I` · 128.014px · bold + italic · `#ffffff` · lineHeight 1 |
+| Title position — wide box | box `height 153.60`: `top 21.1` · `left 30.59, width 1840.12` (align start) or `left 39.94` (align center) |
+| Title position — closing box | box `height 153.11`: **`top 55`** · `left 615.93, width 1110.79` |
 | Body text | `YAG2sxXkTBU` · 36.4px · bold · `#000000` · lineHeight 1.74 |
 | Grey card | `#d5d3d4` at opacity **0.21**, black stroke **4**, cornerRounding **0** |
 | Image/video frame | black stroke 4 (6 on full-height media) |
@@ -102,9 +104,23 @@ resize_element   width: 742.73, height: 2819.25     ← element-local, so resize
 position_element top: -637.73, left: -495.15        ← POST-rotation bounding box
 ```
 
-Also set every content-page title to `top: 21.1` — pages copied from different Iron
-Man layouts arrive at 31.2 or 31.45, which puts the cut in a different place on each
-slide and reads as sloppy.
+Then check where the cut actually lands, because **the title's `top` is not enough
+to predict it.** Two title elements come out of the Iron Man deck, and they carry
+different internal line metrics even at the same font size:
+
+| Title box | Identify by | `top` for a mid-glyph cut |
+|---|---|---|
+| Wide | `height 153.60`, `width 1840.12` | **21.1** |
+| Closing | `height 153.11`, `width 1110.79` | **55** |
+
+Set both to `top 21.1` and the closing-layout slides render with the title sitting
+almost entirely inside the crimson — no visible cut. That is exactly the bug Tal
+caught on the last two slides. Match the box, not the number.
+
+Verify by eye, not by arithmetic: `edit-design` returns a freshly rendered
+after-thumbnail, and that is the only trustworthy check. Thumbnails fetched through
+`read-design` can come back cached at an older document version and will happily
+show you a cut that is no longer there.
 
 Leave **page 1 alone**. The cover is a different composition — the title sits on the
 Marvel pattern between two angular red blocks, not on the banner.
