@@ -77,6 +77,55 @@ authored by hand in Canva.
 
 **Video works.** `update_fill` with `asset_type: "video"` swaps an uploaded Canva video. Tal edits and uploads his own videos — never offer to generate them.
 
+## Drawing icons with `insert_shape`
+
+Stock photography could not serve the icon-design slides — the useful images are
+watermarked commercial stock. Vector shapes drawn straight into the page solve it,
+stay exactly on palette, and scale perfectly. This is now the preferred illustration
+route for any abstract concept.
+
+**Recipe.** A tile is `M0 0H64V64H0z` with `corner_rounding` ≈ 22% of its width,
+fill `#960b0b`, black stroke. A glyph sits on top at ~55% of the tile, fill
+`#ffffff`, `stroke_weight: 0`, centred by hand: `glyph_left = tile_left + (tile − glyph) / 2`.
+`stroke_weight` is **absolute pixels**, not viewBox units — 4 on big shapes, 2 on small.
+Only `M/L/H/V/C/S/A/Z` are supported; `Q` and `T` are rejected.
+
+Tested glyph paths, all on a 64×64 viewBox:
+
+| Glyph | `d` |
+|---|---|
+| bolt | `M38 4L14 36H30L26 60L50 26H34L38 4Z` |
+| shield | `M32 4L58 14V34C58 48 46 57 32 61C18 57 6 48 6 34V14Z` |
+| star | `M32 4L40 24L62 24L44 37L51 58L32 45L13 58L20 37L2 24L24 24Z` |
+| eye | `M2 32C2 32 14 14 32 14C50 14 62 32 62 32C62 32 50 50 32 50C14 50 2 32 2 32ZM32 42A10 10 0 1 0 32 22A10 10 0 1 0 32 42Z` |
+| flame | `M32 2C32 2 12 24 12 38A20 20 0 0 0 52 38C52 24 32 2 32 2Z` |
+| plus | `M26 4H38V26H60V38H38V60H26V38H4V26H26Z` |
+| circle | `M32 2A30 30 0 1 0 32 62A30 30 0 1 0 32 2Z` |
+| rectangle | `M4 12H60V52H4Z` |
+| triangle | `M32 6L60 56H4Z` |
+| camera | `M12 20H20L24 14H40L44 20H52C55 20 58 23 58 26V48C58 51 55 54 52 54H12C9 54 6 51 6 48V26C6 23 9 20 12 20ZM32 46A12 12 0 1 0 32 22A12 12 0 1 0 32 46Z` |
+| play | `M20 12L52 32L20 52Z` |
+
+**A phone** is three shapes: black body (rounding ~64), white screen inset 20–25px
+(rounding ~42), and a small black notch bar centred on the screen top. Drop a tile
+grid inside. An empty tile — white fill, black stroke 4, no glyph — reads as
+"waiting for you to draw here", which is how the assignment slide invites students in.
+
+**Diagrams that teach.** A size ladder (one tile at 380 / 250 / 160 / 100 / 60,
+all sharing a bottom baseline, largest on the right for RTL) shows scalability far
+better than any sentence. Three grey tiles against one crimson tile shows uniqueness.
+
+## Page structure — what needs Tal's word
+
+`merge-designs` inserting pages from the Iron Man deck is routine. Two things are not:
+
+- **Deleting a page** requires Tal to type the exact phrase the tool demands. Never
+  approximate it. When he asks for a slide to go, repurpose the page instead — replace
+  its title and text with content that belongs at that point in the sequence — and tell
+  him the page is still there if he wants it truly removed.
+- **Reordering pages** he has declined once. Design around the existing order rather
+  than proposing a move again.
+
 ## Content rules
 
 - Hebrew body copy, direct address to students (״זכרו…״, ״בחרו…״). Explanations in Hebrew even when the source material is English.
@@ -101,7 +150,10 @@ An opinion by עו״ד אריאל דובינסקי covers Marvel/DC use under **
 
 ## Decks
 
-- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — **done, 10 pages**
+- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — **done, 12 pages**
+  (1 cover · 2 תוכן עניינים · 3 מהו איור? · 4–5 למה התכוון המאייר? · 6 איך קוראים פאנל? ·
+  7 אייקון דיגיטלי · 8–10 the three דגשים · 11 צאו לדרך! · 12 עקבו אחרינו).
+  Slides 4–5 still hold placeholder panels — Tal to upload from his own Marvel archive.
 - `DAHTZhm6Fqc` — כתיבת תסריט לחוברת קומיקס | מהדורת 2026 — cover done, 8 pages still holding Iron Man content
 - `DAHTZaBP_SY` — abandoned first attempt, superseded, ignore
 
