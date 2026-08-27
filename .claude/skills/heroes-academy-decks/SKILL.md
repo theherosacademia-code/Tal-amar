@@ -117,10 +117,22 @@ Set both to `top 21.1` and the closing-layout slides render with the title sitti
 almost entirely inside the crimson — no visible cut. That is exactly the bug Tal
 caught on the last two slides. Match the box, not the number.
 
-Verify by eye, not by arithmetic: `edit-design` returns a freshly rendered
-after-thumbnail, and that is the only trustworthy check. Thumbnails fetched through
-`read-design` can come back cached at an older document version and will happily
-show you a cut that is no longer there.
+### Thumbnails lie — Tal's Canva view is the authority
+
+The previews this tool returns are ~596x335 exports, roughly a third of full size,
+from a different render path than the live editor. Two consequences, both of which
+have already cost a round of pointless work:
+
+- `read-design` thumbnails can come back **cached at an older document version**,
+  showing a state that no longer exists.
+- The **black outline on the title is a Canva text effect**, and it does not survive
+  the small export faithfully. The title's edges, and therefore how the crimson cut
+  reads, look meaningfully different here than they do on screen.
+
+So: `edit-design`'s after-thumbnail is the best check available and worth using to
+catch gross errors, but it is not the verdict. When Tal says it looks right in
+Canva, it is right — do not "fix" a slide against a preview he has not complained
+about. When a preview looks wrong but he has not mentioned it, ask before acting.
 
 Leave **page 1 alone**. The cover is a different composition — the title sits on the
 Marvel pattern between two angular red blocks, not on the banner.
