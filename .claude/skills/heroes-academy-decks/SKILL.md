@@ -1,6 +1,6 @@
 ---
 name: heroes-academy-decks
-description: Build and renew Hebrew Canva presentations for האקדמיה לגיבורים (Heroes Academy) comics curriculum. Use whenever the task involves Tal Amar's Canva decks — renewing an old lesson deck, building a new one, editing slides, swapping images or video, or matching the Iron Man design system. Triggers on "מצגת", "קאנווה", "שקופית", "האקדמיה לגיבורים", "קומיקס דיגיטלי", Canva design IDs, or any request to update lesson slides.
+description: Build and renew Hebrew Canva presentations for האקדמיה לגיבורים (Heroes Academy) comics curriculum. Use whenever the task involves Tal Amar's Canva decks — renewing an old lesson deck, building a new one, editing slides, swapping images or video, or matching the קומיקס דיגיטלי design system. Triggers on "מצגת", "קאנווה", "שקופית", "האקדמיה לגיבורים", "קומיקס דיגיטלי", Canva design IDs, or any request to update lesson slides.
 ---
 
 # Heroes Academy — Canva deck system
@@ -9,146 +9,116 @@ Tal Amar owns האקדמיה לגיבורים, which teaches comics and animatio
 
 ## THE GOLDEN RULE
 
-**Never build a slide from scratch. Always copy pages from the Iron Man reference deck and replace the content.**
+**Never build a slide from scratch. Always copy pages from the reference deck and replace the content.**
 
-Reference deck: **`DAHSNrccONo`** — "סדנת איירון מן - קומיקס דיגיטלי"
+Reference deck: **`DAGQ1Ke7cIQ`** — "קומיקס דיגיטלי", 18 pages. Tal authored it in Aug 2026 as the
+canonical design language for every deck. It **supersedes** the old Iron Man deck
+(`DAHSNrccONo`), which is now only of historical interest — do not build from it.
 
 This is not a stylistic preference. Two things are **impossible** through the Canva API and only survive by copying a page:
 
-1. **The black outline on white title text.** It is a Canva *text effect*. It does not appear in the element JSON at all — a title reads back as `{"color": "#ffffff"}` with no stroke. You cannot add it.
+1. **The black outline on white text.** It is a Canva *text effect*. It does not appear in the element JSON at all — a title reads back as `{"color": "#ffffff"}` with no stroke. You cannot add it. It is load-bearing: it is the only reason white titles stay legible where they cross onto white, and the only reason white card headings work on a near-white card.
 2. **Font family.** `format_text` has no font parameter, and `add_text` uses a default. Copied text elements keep the right fonts; new ones never will.
 
 Building from scratch produces something that looks *almost* right and is therefore wrong. Tal will notice.
 
 ## Workflow
 
-1. `merge-designs` with `type: create_new_design`, one `insert_pages` operation, `page_numbers` listing Iron Man pages in order — **duplicates are allowed**, e.g. `[1,3,3,4,2,2,3,6,6]`. Only one operation per request.
+1. `merge-designs` with `type: create_new_design`, one `insert_pages` operation, `page_numbers` listing reference pages in order — **duplicates are allowed**, e.g. `[1,2,3,7,7,7,4,17,18]`. Only one operation per request.
 2. Harvest media IDs from the old deck (`read-design` with `open_transaction: true` — the ids only appear in a transaction read).
 3. `read-design` the new deck for locator ids, then per page: `replace_text`, `update_fill`, `resize_element`, `position_element`, `crop_media`.
 4. Commit. Never touch the original deck — it is the backup.
 
-### Iron Man page layouts
+### Layout inventory — `DAGQ1Ke7cIQ`
 
-| Page | Layout |
-|---|---|
-| 1 | Cover — full-bleed hero, yellow comic burst, title + subtitle, logo bottom-left |
-| 2 | Tall image left + three stacked fact cards right |
-| 3 | Tall media left + one large text card right — **the workhorse** |
-| 4 | Wide text bar top + three images in a row |
-| 5 | Video + text card + bottom image strip |
-| 6 | Full-bleed image + task card — closing/assignment slide |
+| Page | Layout | Use for |
+|---|---|---|
+| 1 | Cover — comic collage inside a tablet frame, red angular blocks, yellow burst holding the title, subtitle, logo bottom-right | Deck cover |
+| 2 | TOC — crimson panel down the right edge, gold badges with icons beside each chapter, large image left | Table of contents |
+| 3 | Tall portrait illustration left + card right | Opening / definition |
+| 4 | **Five-column grid** — each column a bordered card: heading, body, image at the foot | Curriculum overview, any 5-part breakdown |
+| 5–15 | **The workhorse** — image left + card right carrying an outlined heading and centred body | Almost every content slide |
+| 16 | Image + logo left + card right | Tool / software intro |
+| 17 | Portrait image left + card right with a bulleted list | Assignment |
+| 18 | Card top + social icon cluster + logo | עקבו אחרינו closer |
+
+Pages 5–15 are eleven variations of one layout. Copy whichever one's image proportions match the picture you have.
 
 ## Design tokens — exact values
 
 | | |
 |---|---|
 | Canvas | 1920×1080, white background |
-| Crimson banner | `#960b0b`, black stroke **6** |
-| Banner geometry | stored `top: -1675.99, left: 543.11, width: 742.73, height: 2819.25, rotation: 90` |
-| Banner visual span | y `0 → 105`, x `-495.15 → 2324.11` (it deliberately overhangs both edges) |
-| Title text | `YAGRfpd9t4I` · 128.014px · bold + italic · `#ffffff` · lineHeight 1 |
-| Title position — wide box | box `height 153.60`: `top 21.1` · `left 30.59, width 1840.12` (align start) or `left 39.94` (align center) |
-| Title position — closing box | box `height 153.11`: **`top 55`** · `left 615.93, width 1110.79` |
-| Body text | `YAG2sxXkTBU` · 36.4px · bold · `#000000` · lineHeight 1.74 |
-| Grey card | `#d5d3d4` at opacity **0.21**, black stroke **4**, cornerRounding **0** |
-| Image/video frame | black stroke 4 (6 on full-height media) |
-| Card grid (p2) | left 1028.96, width 655.51, height 161.01, vertical pitch 261.67 |
+| Crimson | `#960b0b` · secondary red `#c61b1b` (cover only) · yellow `#fdf03d` |
+| Body ink | `#231f20` — **not** pure black |
+| Card | `#f7f8f8` (columns: `#fffcfc`) · **opacity 1** · black stroke **4** · cornerRounding 0 |
+| Display font | **`YAG2s6gDzUY`** — titles, card headings, column headings |
+| Body font | `YAG2sxXkTBU` |
+| Cover subtitle font | `YAFwAZ01Tmw` · 33.786px · normal weight |
+| Banner | rot 90 · stored `top -1189.869, left 838.447, width 243.106, height 2316.810` · `#960b0b` · stroke 4 |
+| Banner visual span | y `0 → 90.09`, x `-198.4 → 2118.4` (it deliberately overhangs both edges) |
+| Title | `top 35.148, left 514.871, width 890.258` · **121.481px** · bold + italic · `#ffffff` · **center** · lineHeight **1.4** |
+| Cover title | 160.942px, same font |
+| Card — standard | `top 231.79, left 807.97, 1341.62 × 704.36` |
+| Card — full width | `top 244.42, left 59.68, 1800.63 × 704.36` |
+| Card body | **45.181px** · bold · `#231f20` · **center** · lineHeight 1.4 |
+| Column card | `334.216 × 662.321` · top `265.444` · lefts `77.25 / 434.59 / 791.92 / 1149.25 / 1506.58` (pitch **357.331**) |
+| Column heading | 27.091px · bold + italic · `#ffffff` (outlined) · center |
+| Column body | 25.106px · bold · `#231f20` · center · lineHeight 1.4 |
+| Corner watermark | `MAG0d6qCfTo` at `top 0, left 1399.29, 524.59 × 523.28`, **opacity 0.11**, flipX + flipY |
 
-Off-system colors that appear in old decks and must go: `#002c66` (navy connector lines), `#dd1414` / `#c61b1b` / `#fa2828` (extra reds), rounded pills (`cornerRounding: 51`).
-
-### Settled — do not re-propose
-
-The tokens above are **fixed**. In Aug 2026 Tal reviewed and rejected a proposed
-redesign: an opaque cream caption box (`#FBF3D5`) replacing the translucent grey
-card, and normal-weight body copy. His decision: keep the existing design.
-Do not raise it again unless he asks.
-
-Also settled: a third type size for sub-headings is not achievable here.
-`format_text` applies to a whole text element, and headings live inline with
-their lists in a single element. It would need separate heading elements
-authored by hand in Canva.
-
-## API traps — learned the hard way
-
-**`position_element` takes POST-rotation coordinates.** For a 90°-rotated element the stored `top`/`left` you read back are pre-rotation and differ by `(height − width) / 2`. To land the banner on its canonical stored values, pass `top: -637.73, left: -495.15`.
-
-**Resize before positioning.** `resize_element` re-centres the element, discarding any position you just set.
-
-**`crop_media` after every `update_fill` + `resize`.** Otherwise Canva keeps the old image box and the picture shows a random crop. Pass `top: 0, left: 0` and the element's new width/height.
-
-**Portrait images do not belong in full-bleed slots.** A 0.65-ratio photo stretched across 1920×1080 crops to an unrecognisable detail. Put it in a side panel instead.
-
-**Video works.** `update_fill` with `asset_type: "video"` swaps an uploaded Canva video. Tal edits and uploads his own videos — never offer to generate them.
+Body copy in this system is **centred**, not start-aligned. That is a deliberate change from
+the old Iron Man decks — do not "correct" it back.
 
 ### The banner CUTS the title — non-negotiable
 
-Tal fixed this as design language in Aug 2026, and it is the single detail he has
-corrected most. The crimson banner's bottom edge must **slice through the middle of
-the title**: the upper half of the letterforms sits on crimson, the lower half on
-white. It is not a container. Do not "fix" a title that hangs below the bar — that
-is the design.
+The crimson banner's bottom edge **slices through the middle of the title**: the upper half of
+the letterforms sits on crimson, the lower half on white. It is not a container. Do not "fix" a
+title that hangs below the bar — that is the design. The black outline on the white title is
+what makes it work; the outline and the cut are one idea and neither works alone.
 
-This is what the black outline on the white title is *for*. It is the only reason
-the lower half stays legible once it crosses onto the white page. The outline and
-the cut are one idea; neither works alone.
-
-The arithmetic, because it is not obvious: the banner is rotated 90°, so the
-*stored* `width` is what you see as its height, and its visible bottom edge lands at
-`stored_width − 637.73`. The title's glyph ink runs roughly `y 51 → 153`, so the cut
-wants to be at ~105 — hence a stored width of **742.73**.
+The arithmetic, because it is not obvious: the banner is rotated 90°, so its *stored* `width` is
+what you see as its height, and its visible bottom edge lands at `stored_width − 153.02`.
 
 Applied per page as two ops in one call:
 
 ```
-resize_element   width: 742.73, height: 2819.25     ← element-local, so resize first
-position_element top: -637.73, left: -495.15        ← POST-rotation bounding box
+resize_element   width: 243.106, height: 2316.810   ← element-local, so resize first
+position_element top: -153.02, left: -198.40        ← POST-rotation bounding box
 ```
 
-Then check where the cut actually lands, because **the title's `top` is not enough
-to predict it.** Two title elements come out of the Iron Man deck, and they carry
-different internal line metrics even at the same font size:
-
-| Title box | Identify by | `top` for a mid-glyph cut |
-|---|---|---|
-| Wide | `height 153.60`, `width 1840.12` | **21.1** |
-| Closing | `height 153.11`, `width 1110.79` | **55** |
-
-Set both to `top 21.1` and the closing-layout slides render with the title sitting
-almost entirely inside the crimson — no visible cut. That is exactly the bug Tal
-caught on the last two slides. Match the box, not the number.
+Then check where the cut actually lands, because **a title's `top` alone does not predict it**.
+Title elements copied from different source pages carry different internal line metrics even at
+the same font size, and one that renders higher ends up sitting entirely inside the crimson with
+no visible cut. Match the rendered result, not the number.
 
 ### Thumbnails lie — Tal's Canva view is the authority
 
-The previews this tool returns are ~596x335 exports, roughly a third of full size,
-from a different render path than the live editor. Two consequences, both of which
-have already cost a round of pointless work:
+The previews this tool returns are ~596×335 exports, roughly a third of full size, from a
+different render path than the live editor. Two consequences, both of which have already cost a
+round of pointless work:
 
-- `read-design` thumbnails can come back **cached at an older document version**,
-  showing a state that no longer exists.
-- The **black outline on the title is a Canva text effect**, and it does not survive
-  the small export faithfully. The title's edges, and therefore how the crimson cut
-  reads, look meaningfully different here than they do on screen.
+- `read-design` thumbnails can come back **cached at an older document version**, showing a state
+  that no longer exists.
+- The **black outline is a text effect** and does not survive the small export faithfully, so how
+  the crimson cut reads looks meaningfully different here than on screen.
 
-So: `edit-design`'s after-thumbnail is the best check available and worth using to
-catch gross errors, but it is not the verdict. When Tal says it looks right in
-Canva, it is right — do not "fix" a slide against a preview he has not complained
-about. When a preview looks wrong but he has not mentioned it, ask before acting.
-
-Leave **page 1 alone**. The cover is a different composition — the title sits on the
-Marvel pattern between two angular red blocks, not on the banner.
+So: `edit-design`'s after-thumbnail is the best check available and worth using to catch gross
+errors, but it is not the verdict. When Tal says it looks right in Canva, it is right — do not
+"fix" a slide against a preview he has not complained about. When a preview looks wrong but he
+has not mentioned it, ask before acting.
 
 ## Drawing icons with `insert_shape`
 
-Stock photography could not serve the icon-design slides — the useful images are
-watermarked commercial stock. Vector shapes drawn straight into the page solve it,
-stay exactly on palette, and scale perfectly. This is now the preferred illustration
-route for any abstract concept.
+Stock photography could not serve the icon-design slides — the useful images are watermarked
+commercial stock. Vector shapes drawn straight into the page solve it, stay exactly on palette,
+and scale perfectly. This is the preferred illustration route for any abstract concept.
 
-**Recipe.** A tile is `M0 0H64V64H0z` with `corner_rounding` ≈ 22% of its width,
-fill `#960b0b`, black stroke. A glyph sits on top at ~55% of the tile, fill
-`#ffffff`, `stroke_weight: 0`, centred by hand: `glyph_left = tile_left + (tile − glyph) / 2`.
-`stroke_weight` is **absolute pixels**, not viewBox units — 4 on big shapes, 2 on small.
-Only `M/L/H/V/C/S/A/Z` are supported; `Q` and `T` are rejected.
+**Recipe.** A tile is `M0 0H64V64H0z` with `corner_rounding` ≈ 22% of its width, fill `#960b0b`,
+black stroke. A glyph sits on top at ~55% of the tile, fill `#ffffff`, `stroke_weight: 0`, centred
+by hand: `glyph_left = tile_left + (tile − glyph) / 2`. `stroke_weight` is **absolute pixels**,
+not viewBox units — 4 on big shapes, 2 on small. Only `M/L/H/V/C/S/A/Z` are supported; `Q` and `T`
+are rejected.
 
 Tested glyph paths, all on a 64×64 viewBox:
 
@@ -166,31 +136,45 @@ Tested glyph paths, all on a 64×64 viewBox:
 | camera | `M12 20H20L24 14H40L44 20H52C55 20 58 23 58 26V48C58 51 55 54 52 54H12C9 54 6 51 6 48V26C6 23 9 20 12 20ZM32 46A12 12 0 1 0 32 22A12 12 0 1 0 32 46Z` |
 | play | `M20 12L52 32L20 52Z` |
 
-**A phone** is three shapes: black body (rounding ~64), white screen inset 20–25px
-(rounding ~42), and a small black notch bar centred on the screen top. Drop a tile
-grid inside. An empty tile — white fill, black stroke 4, no glyph — reads as
-"waiting for you to draw here", which is how the assignment slide invites students in.
+**A phone** is three shapes: black body (rounding ~64), white screen inset 20–25px (rounding ~42),
+and a small black notch bar centred on the screen top. Drop a tile grid inside. An empty tile —
+white fill, black stroke 4, no glyph — reads as "waiting for you to draw here", which is how an
+assignment slide invites students in.
 
-**Diagrams that teach.** A size ladder (one tile at 380 / 250 / 160 / 100 / 60,
-all sharing a bottom baseline, largest on the right for RTL) shows scalability far
-better than any sentence. Three grey tiles against one crimson tile shows uniqueness.
+**Diagrams that teach.** A size ladder (one tile at 380 / 250 / 160 / 100 / 60, all sharing a
+bottom baseline, largest on the right for RTL) shows scalability far better than any sentence.
+Three grey tiles against one crimson tile shows uniqueness.
 
 ## Page structure — what needs Tal's word
 
-`merge-designs` inserting pages from the Iron Man deck is routine. Two things are not:
+`merge-designs` inserting pages from the reference deck is routine. Two things are not:
 
-- **Deleting a page** requires Tal to type the exact phrase the tool demands. Never
-  approximate it. When he asks for a slide to go, repurpose the page instead — replace
-  its title and text with content that belongs at that point in the sequence — and tell
-  him the page is still there if he wants it truly removed.
-- **Reordering pages** he has declined once. Design around the existing order rather
-  than proposing a move again.
+- **Deleting a page** requires Tal to type the exact phrase the tool demands. Never approximate
+  it. When he asks for a slide to go, repurpose the page instead — replace its title and text with
+  content that belongs at that point in the sequence — and tell him the page is still there if he
+  wants it truly removed.
+- **Reordering pages** he has declined once. Design around the existing order rather than
+  proposing a move again.
+
+## API traps — learned the hard way
+
+**`position_element` takes POST-rotation coordinates.** For a 90°-rotated element the stored `top`/`left` you read back are pre-rotation and differ by `(height − width) / 2`.
+
+**Resize before positioning.** `resize_element` re-centres the element, discarding any position you just set.
+
+**`crop_media` after every `update_fill` + `resize`.** Otherwise Canva keeps the old image box and the picture shows a random crop. Pass `top: 0, left: 0` and the element's new width/height.
+
+**Portrait images do not belong in full-bleed slots.** A 0.65-ratio photo stretched across 1920×1080 crops to an unrecognisable detail. Put it in a side panel instead.
+
+**Hebrew gershayim is `״` (״), not `ע` (ע).** Getting this wrong silently turns every quotation mark into an ayin.
+
+**Video works.** `update_fill` with `asset_type: "video"` swaps an uploaded Canva video. Tal edits and uploads his own videos — never offer to generate them.
 
 ## Content rules
 
 - Hebrew body copy, direct address to students (״זכרו…״, ״בחרו…״). Explanations in Hebrew even when the source material is English.
 - Grades 3–6 do not read eight-line paragraphs. Split a dense slide into two rather than shrinking the type.
-- English video is fine **with Hebrew subtitles** (Tal adds them in his own edit). Comic panels need no subtitles — they are visual.
+- English video is fine **with Hebrew subtitles** (Tal adds them in his own edit; there is no Canva API operation for subtitles). Comic panels need no subtitles — they are visual.
 - Sequence runs easy → hard across the curriculum.
 - The academy writes inclusively: ״גיבורים.ות״.
 - Keep Tal's facts. Tighten phrasing, never invent curriculum content without flagging it.
@@ -204,17 +188,23 @@ An opinion by עו״ד אריאל דובינסקי covers Marvel/DC use under **
 3. Teaching only. **Never** use this material to market or brand the courses.
 4. No wide digital distribution beyond the classroom — do not publish these decks publicly.
 
-## Assets already in Tal's Canva
+Non-comic imagery is restricted to Unsplash / Pexels / Wikimedia. Never upload watermarked or
+paid commercial stock into Tal's Canva. `upload-asset-from-url` accepts only already-public URLs —
+never publish his private files to create one.
 
-`MAGO3pvU4rg` academy logo · `MAFFlAHmZ4I` yellow comic burst · `MAGdrxx6z7s` Marvel icon pattern · `MAFqqanf2cg` Hulk vs Spider-Man
+## Assets in Tal's Canva
+
+**Reference deck:** `MAGpZ-dAQGs` cover collage · `MAEqOGm_aLE` tablet frame (two halves, one flipped) · `MAFFlAHmZ4I` yellow burst (recoloured `#ec1c24→#960b0b`, `#f9ec31→#fdf03d`) · `MAGO3pvU4rg` academy logo · `MAG0d6qCfTo` corner watermark · `MAEL5Bmn-RI` gold TOC badge · `MAGOlmkSCxM` `MAGOlgZ1bKw` `MAGOliU7hjk` `MAGOlm3_Fu0` TOC icons
+
+**Comics:** `MAGdrxx6z7s` Marvel icon pattern · `MAFqqanf2cg` Hulk vs Spider-Man · `MAGsbH_IAmE` Spider-Man with camera · `MAGd9C28GlA` app icon grid
 
 ## Decks
 
-- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — **done, 12 pages**
-  (1 cover · 2 תוכן עניינים · 3 מהו איור? · 4–5 למה התכוון המאייר? · 6 איך קוראים פאנל? ·
-  7 אייקון דיגיטלי · 8–10 the three דגשים · 11 צאו לדרך! · 12 עקבו אחרינו).
-  Slides 4–5 still hold placeholder panels — Tal to upload from his own Marvel archive.
-- `DAHTZhm6Fqc` — כתיבת תסריט לחוברת קומיקס | מהדורת 2026 — cover done, 8 pages still holding Iron Man content
-- `DAHTZaBP_SY` — abandoned first attempt, superseded, ignore
+- `DAGQ1Ke7cIQ` — קומיקס דיגיטלי — **the design reference**, 18 pages. Never modify.
+- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — done, 12 pages, built on the old Iron Man language
+- `DAHTZhm6Fqc` — כתיבת תסריט לחוברת קומיקס | מהדורת 2026 — cover only, 8 pages still holding Iron Man content
+- `DAFuytczpME` — מצגת שיעור - ספיידרמן ודחייה חברתית — 9 pages, original, awaiting rebuild
+- `DAHSNrccONo` — Iron Man — superseded as reference, keep for history
+- `DAHTZaBP_SY` — abandoned first attempt, ignore
 
 The full catalogue of all 81 presentations is at https://claude.ai/code/artifact/ce821a49-7453-4b59-8d7a-11c663adaa1b
