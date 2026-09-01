@@ -174,6 +174,11 @@ the image-and-card layout tilts its photo by 17.87°, and the assignment slot si
 -90°. `update_fill` keeps the existing rotation, so a photo dropped into the -90° slot
 renders on its side. Call `rotate_element` to 0 first, then resize, then position.
 
+**Canva library elements cannot be transferred between designs.** An asset Tal picked
+from Canva's own library — the gold TOC badge `MAEL5Bmn-RI`, for one — fails
+`insert_fill` with "media bundle not found". Only his own uploads carry across. Draw a
+substitute with `insert_shape`, or leave the slot empty and let him place it himself.
+
 **Reference page 2 (the TOC) cannot be copied.** It contains an element the API reports
 as `unsupported`, and `merge-designs` silently drops the whole page — you get back one
 page fewer than you asked for, with no error. Build a table of contents on the
@@ -191,6 +196,11 @@ the card heading, which holds ~17 characters at 69.246px.
 
 ## Content rules
 
+- **Never drop content from the source deck.** Tal's rule, stated plainly: content wins
+  over design fit. If an image, a caption, a credit line or a paragraph existed on the old
+  slide, it belongs on the new one — even where it does not sit neatly in the layout.
+  When something genuinely cannot fit, say so and offer an extra slide; do not quietly
+  leave it out. He checks.
 - Hebrew body copy, direct address to students (״זכרו…״, ״בחרו…״). Explanations in Hebrew even when the source material is English.
 - Grades 3–6 do not read eight-line paragraphs. Split a dense slide into two rather than shrinking the type.
 - English video is fine **with Hebrew subtitles** (Tal adds them in his own edit; there is no Canva API operation for subtitles). Comic panels need no subtitles — they are visual.
@@ -221,7 +231,8 @@ never publish his private files to create one.
 
 - `DAGQ1Ke7cIQ` — קומיקס דיגיטלי — **the design reference**, 18 pages. Never modify.
 - `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — done, 12 pages, built on the old Iron Man language
-- `DAHT3XvFzCc` — כתיבת תסריט לחוברת קומיקס | מהדורת 2026 — **done, 10 pages**, first deck built on the new reference
+- `DAHT3XvFzCc` — כתיבת תסריט לחוברת קומיקס | קומיקס דיגיטלי — **done, 11 pages**, first deck
+  built on the new reference. Page 3 is a superseded table of contents awaiting Tal's deletion.
 - `DAHTZhm6Fqc` — earlier partial attempt at the same deck on the old Iron Man language — superseded, Tal can delete
 - `DAFuytczpME` — מצגת שיעור - ספיידרמן ודחייה חברתית — 9 pages, original, awaiting rebuild
 - `DAHSNrccONo` — Iron Man — superseded as reference, keep for history
