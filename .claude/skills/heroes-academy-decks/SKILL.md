@@ -27,7 +27,10 @@ Building from scratch produces something that looks *almost* right and is theref
 1. `merge-designs` with `type: create_new_design`, one `insert_pages` operation, `page_numbers` listing reference pages in order — **duplicates are allowed**, e.g. `[1,2,3,7,7,7,4,17,18]`. Only one operation per request.
 2. Harvest media IDs from the old deck (`read-design` with `open_transaction: true` — the ids only appear in a transaction read).
 3. `read-design` the new deck for locator ids, then per page: `replace_text`, `update_fill`, `resize_element`, `position_element`, `crop_media`.
-4. Commit. Never touch the original deck — it is the backup.
+4. **Commit every two or three pages.** Canva editing transactions expire. Holding one
+   open across a long build — especially with pauses to answer questions — loses
+   everything uncommitted. This has already cost a full rebuild once.
+5. Never touch the original deck — it is the backup.
 
 ### Layout inventory — `DAGQ1Ke7cIQ`
 
@@ -37,12 +40,14 @@ Building from scratch produces something that looks *almost* right and is theref
 | 2 | TOC — crimson panel down the right edge, gold badges with icons beside each chapter, large image left | Table of contents |
 | 3 | Tall portrait illustration left + card right | Opening / definition |
 | 4 | **Five-column grid** — each column a bordered card: heading, body, image at the foot | Curriculum overview, any 5-part breakdown |
-| 5–15 | **The workhorse** — image left + card right carrying an outlined heading and centred body | Almost every content slide |
+| 5–15 | **Image-and-card** — tilted image left + card right carrying an outlined heading and centred body | Almost every content slide |
 | 16 | Image + logo left + card right | Tool / software intro |
 | 17 | Portrait image left + card right with a bulleted list | Assignment |
 | 18 | Card top + social icon cluster + logo | עקבו אחרינו closer |
 
-Pages 5–15 are eleven variations of one layout. Copy whichever one's image proportions match the picture you have.
+Pages 5–15 are eleven variations of one layout — call it **image-and-card** with Tal, not
+"workhorse", which meant nothing to him. Copy whichever variation's image proportions
+match the picture you have.
 
 ## Design tokens — exact values
 
@@ -164,6 +169,20 @@ Three grey tiles against one crimson tile shows uniqueness.
 
 **`crop_media` after every `update_fill` + `resize`.** Otherwise Canva keeps the old image box and the picture shows a random crop. Pass `top: 0, left: 0` and the element's new width/height.
 
+**Check `rotation` before placing an image.** Several reference slots are rotated —
+the image-and-card layout tilts its photo by 17.87°, and the assignment slot sits at
+-90°. `update_fill` keeps the existing rotation, so a photo dropped into the -90° slot
+renders on its side. Call `rotate_element` to 0 first, then resize, then position.
+
+**Reference page 2 (the TOC) cannot be copied.** It contains an element the API reports
+as `unsupported`, and `merge-designs` silently drops the whole page — you get back one
+page fewer than you asked for, with no error. Build a table of contents on the
+image-and-card layout instead, with the chapter list as the body text.
+
+**Title width is capped at about 13 Hebrew characters** at 121.481px in the 890px box.
+"ההיסטוריה של הקומיקס" overflows; "ההיסטוריה" fits. Push the rest of the phrase into
+the card heading, which holds ~17 characters at 69.246px.
+
 **Portrait images do not belong in full-bleed slots.** A 0.65-ratio photo stretched across 1920×1080 crops to an unrecognisable detail. Put it in a side panel instead.
 
 **Hebrew gershayim is `״` (״), not `ע` (ע).** Getting this wrong silently turns every quotation mark into an ayin.
@@ -202,7 +221,8 @@ never publish his private files to create one.
 
 - `DAGQ1Ke7cIQ` — קומיקס דיגיטלי — **the design reference**, 18 pages. Never modify.
 - `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — done, 12 pages, built on the old Iron Man language
-- `DAHTZhm6Fqc` — כתיבת תסריט לחוברת קומיקס | מהדורת 2026 — cover only, 8 pages still holding Iron Man content
+- `DAHT3XvFzCc` — כתיבת תסריט לחוברת קומיקס | מהדורת 2026 — **done, 10 pages**, first deck built on the new reference
+- `DAHTZhm6Fqc` — earlier partial attempt at the same deck on the old Iron Man language — superseded, Tal can delete
 - `DAFuytczpME` — מצגת שיעור - ספיידרמן ודחייה חברתית — 9 pages, original, awaiting rebuild
 - `DAHSNrccONo` — Iron Man — superseded as reference, keep for history
 - `DAHTZaBP_SY` — abandoned first attempt, ignore
