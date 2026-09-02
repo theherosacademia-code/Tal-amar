@@ -97,6 +97,23 @@ Title elements copied from different source pages carry different internal line 
 the same font size, and one that renders higher ends up sitting entirely inside the crimson with
 no visible cut. Match the rendered result, not the number.
 
+### Canva's PowerPoint export drops the title outline
+
+Confirmed by inspecting the exported file, not guessed: export any deck in this system to
+PPTX and every white text run comes out as plain `FFFFFF` with no `<a:ln>`. The outline is
+a Canva-only render effect. It happens on the **untouched reference deck** too, so it is
+never caused by editing — do not go hunting for it in the design.
+
+The damage is severe here because the design leans on the outline twice: the title crosses
+onto white below the banner, and card headings are white on a near-white card. Without it
+they vanish.
+
+**The fix**, when Tal needs a working .pptx: export with `export-design`, download it, run
+`fix-pptx-outlines.py` (in this skill folder) over it, and send him the repaired file. The
+script injects `<a:ln>` on every white run at or above 20pt — titles and card headings get
+it, dark body copy does not — with the stroke scaled to 4% of the type size. PDF and PNG
+exports keep the effect and need no repair.
+
 ### Thumbnails lie — Tal's Canva view is the authority
 
 The previews this tool returns are ~596×335 exports, roughly a third of full size, from a
