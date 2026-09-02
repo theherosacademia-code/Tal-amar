@@ -114,6 +114,38 @@ script injects `<a:ln>` on every white run at or above 20pt — titles and card 
 it, dark body copy does not — with the stroke scaled to 4% of the type size. PDF and PNG
 exports keep the effect and need no repair.
 
+### Delivering a .pptx that fits the 30 MiB limit
+
+The standing delivery pipeline: `export-design` with `export_quality: "pro"` → download →
+`fix-pptx-outlines.py` → send. Slides always go out at pro quality; never lower it.
+
+When the file lands over 30 MiB, the cost is almost always **an embedded video encoded far
+larger than the slot it plays in**. Measure before degrading anything:
+
+- **Images** — Canva already sizes these correctly. They are also RGBA cut-outs, so JPEG
+  conversion is off the table and lossless PNG recompression saves nothing. Skip them.
+- **Video** — compare the encode to its display size. Pull `<a:ext cx cy>` from the `<p:sp>`
+  carrying the video relationship and convert EMU to slide pixels with `1920 / sldSz.cx`.
+  In כתיבת תסריט the clip was 1920×888 but played in a 696×500 slot: three times the pixels
+  anyone can see.
+
+Re-encode to **2× the display width**, which stays retina-sharp in the frame:
+
+```
+ffmpeg -i vid.mp4 -vf "scale=<2x display width>:-2:flags=lanczos" \
+       -c:v libx264 -preset slow -crf 21 -pix_fmt yuv420p -c:a aac -b:a 128k out.mp4
+```
+
+18.75 MB → 12.3 MB, file 34.5 → 28.1 MiB, nothing visibly changed. Then swap the entry back
+into the zip by name and re-verify with `testzip()`.
+
+Plain CRF re-encoding at the original resolution is not worth it — Canva's encode is already
+efficient, and CRF 22 bought only 1.5 MB. Downscaling to the slot is the move.
+
+Tell Tal what changed and what the trade-off is: the clip is still 2× its on-slide size, so it
+is identical inside the deck, but softer if he ever plays that file full-screen on its own.
+ffmpeg comes from `pip install imageio-ffmpeg` — there is no system ffmpeg in the container.
+
 ### Thumbnails lie — Tal's Canva view is the authority
 
 The previews this tool returns are ~596×335 exports, roughly a third of full size, from a
