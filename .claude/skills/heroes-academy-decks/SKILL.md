@@ -273,6 +273,19 @@ the card heading, which holds ~17 characters at 69.246px.
   slide, it belongs on the new one — even where it does not sit neatly in the layout.
   When something genuinely cannot fit, say so and offer an extra slide; do not quietly
   leave it out. He checks.
+- **Diff the rebuilt deck against the source before handing it over.** Go slide by slide and
+  compare the actual strings, not your memory of them. Four kinds of drift creep in and Tal
+  catches all of them:
+  - **Borrowed imagery.** An image that is in his Canva but not in *this* deck is still a
+    substitution. When the source slide carried a drawn diagram, redraw that diagram — do not
+    swap in a photo because it is easier.
+  - **Invented card headings.** The new layout has a white heading slot the old decks did not,
+    so it must be filled — but with a phrase lifted from that slide's own body text, never a
+    fresh one you wrote. Say which ones you added.
+  - **Rewritten phrasing.** ״ברור גם בקטן״ is not an invitation to write ״ברור גם כשמקטינים
+    לגודל של ציפורן״. Keep his words.
+  - **Collapsed structure.** A label on its own line (״בדקו את עצמכם:״) stays on its own line;
+    a run of quotes keeps its original spacing.
 - Hebrew body copy, direct address to students (״זכרו…״, ״בחרו…״). Explanations in Hebrew even when the source material is English.
 - Grades 3–6 do not read eight-line paragraphs. Split a dense slide into two rather than shrinking the type.
 - English video is fine **with Hebrew subtitles** (Tal adds them in his own edit; there is no Canva API operation for subtitles). Comic panels need no subtitles — they are visual.
