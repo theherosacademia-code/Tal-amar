@@ -251,10 +251,31 @@ from Canva's own library — the gold TOC badge `MAEL5Bmn-RI`, for one — fails
 `insert_fill` with "media bundle not found". Only his own uploads carry across. Draw a
 substitute with `insert_shape`, or leave the slot empty and let him place it himself.
 
-**Reference page 2 (the TOC) cannot be copied.** It contains an element the API reports
-as `unsupported`, and `merge-designs` silently drops the whole page — you get back one
-page fewer than you asked for, with no error. Build a table of contents on the
-image-and-card layout instead, with the chapter list as the body text.
+**The TOC page cannot be copied — rebuild it from these numbers.** Both the reference's
+page 2 and Tal's own version in `DAHT3XvFzCc` carry an element the API reports as
+`unsupported`, so `merge-designs` silently drops the whole page: you get one page fewer than
+you asked for, with no error. Do **not** substitute the image-and-card layout — Tal checks
+this slide against his other decks. Build it on a copied image-and-card page by stripping the
+card and the top banner and laying out:
+
+| | |
+|---|---|
+| Crimson panel | `545.6 × 1280` at `top -100, left 1810.9` · rounding 16 · stroke 4 — a vertical strip down the **right** edge; there is **no** horizontal banner on this page |
+| Title | same 121.481px display type, but at `top 93.16, left 1059.03` (width 890.258) |
+| Chapter list | one text element, no numbering, body font, centred · his is 36px |
+| Chapter icons | `left ≈ 1737`, straddling the panel edge — roughly 45% of each icon on white, 55% on crimson |
+
+The chapter list must be **one** text element: `add_text` cannot set a font, so six separate
+lines would come out in the wrong typeface. Line pitch is therefore capped at
+`font_size × 2.5` (the `line_height` maximum) — at 42px that is ~96px, which fits six rows
+where his four sit at ~150. Scale the icons to match the tighter rhythm rather than
+overlapping them.
+
+**The gold badge behind each icon (`MAEL5Bmn-RI`) cannot be placed at all** — it is a Canva
+library element, and `insert_fill` fails with `A media bundle required to process the request
+was not found in resources.mediaFiles`. His four chapter icons (`MAGOlmkSCxM` `MAGOlgZ1bKw`
+`MAGOliU7hjk` `MAGOlm3_Fu0`) are his own uploads and do insert. Place those, leave the badges,
+and tell Tal — he adds them himself and has said so.
 
 **Title width is capped at about 13 Hebrew characters** at 121.481px in the 890px box.
 "ההיסטוריה של הקומיקס" overflows; "ההיסטוריה" fits. Push the rest of the phrase into
