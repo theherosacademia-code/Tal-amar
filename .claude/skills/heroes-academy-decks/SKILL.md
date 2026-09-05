@@ -210,6 +210,29 @@ Three grey tiles against one crimson tile shows uniqueness.
 - **Reordering pages** he has declined once. Design around the existing order rather than
   proposing a move again.
 
+### Two layouts the reference does not have
+
+Two shapes recur in Tal's older decks and neither fits the reference's image-and-card or
+five-column pages. Both are built the same way: take the **five-column** page (ref p4), delete
+its column furniture, and keep the full-width card underneath.
+
+- **Three portrait panels + one caption.** Panels 376 × 560 at `top 360`, lefts **356 / 772 /
+  1188**, each with black stroke 4; the caption is one reused column-body text reformatted to
+  40px, width 1620 at `top 278, left 150`.
+- **Two wide strips stacked.** Grow the standard card to `1800.63 × 800` at `top 210, left
+  59.68`, then strips 1100 wide at `top 320` and `top 648`.
+
+For a **three-column** breakdown, keep three of the five column cards and widen each to
+**573.17 × 662.32** at lefts **77.25 / 673.42 / 1269.59**; headings go to 40px, bodies to 32px.
+
+**A title longer than ~13 characters** does not need a smaller font — widen its box instead and
+re-centre it (`width 1300, left 310` holds ~19 characters at 121.481px). The size stays constant
+across the deck, which is what reads as consistent; the box width is invisible.
+
+**`insert_fill` and a re-purposed background image both land behind the card.** Anything you
+place on top of a card needs `layer_element` to `front` afterwards, or it silently disappears —
+the edit reports success and the thumbnail just shows white.
+
 ## API traps — learned the hard way
 
 **`position_element` takes POST-rotation coordinates.** For a 90°-rotated element the stored `top`/`left` you read back are pre-rotation and differ by `(height − width) / 2`.
@@ -279,7 +302,10 @@ never publish his private files to create one.
 ## Decks
 
 - `DAGQ1Ke7cIQ` — קומיקס דיגיטלי — **the design reference**, 18 pages. Never modify.
-- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — done, 12 pages, built on the old Iron Man language
+- `DAHUWraekK8` — מבוא לאיור ואייקון דיגיטלי | קומיקס דיגיטלי — **the current version**, 12 pages,
+  rebuilt on the new reference
+- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — the old Iron Man-language version it was
+  rebuilt from; keep as the backup
 - `DAHT3XvFzCc` — כתיבת תסריט לחוברת קומיקס | קומיקס דיגיטלי — **done, 11 pages**, first deck
   built on the new reference. Page 3 is a superseded table of contents awaiting Tal's deletion.
 - `DAHTZhm6Fqc` — earlier partial attempt at the same deck on the old Iron Man language — superseded, Tal can delete
