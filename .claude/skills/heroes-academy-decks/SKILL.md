@@ -233,6 +233,23 @@ across the deck, which is what reads as consistent; the box width is invisible.
 place on top of a card needs `layer_element` to `front` afterwards, or it silently disappears —
 the edit reports success and the thumbnail just shows white.
 
+### Building a brand-new deck from the reference
+
+`merge-designs` pulling a page list out of `DAGQ1Ke7cIQ` is the whole scaffold. The order
+`[1, 5, 6, 4, 7, 8, 9, 10, 11, 12, 17, 18]` gives cover · TOC · one wide-text page · the
+five-column breakdown · five image-and-card pages · the assignment page · the follow-us page —
+twelve pages that already carry every token, font and stroke.
+
+What comes across with them is **the reference deck's own photographs and video**. Each one stays
+in place until it is replaced, so an iPad photo sits where a dragon belongs. That is not a defect
+to hide: finish the words first, then hand Tal a numbered list of exactly which slots still hold
+a placeholder. He replaces media in Canva in seconds; guessing at stock imagery for him wastes
+both of your time and risks the licence rules below.
+
+On the image-and-card pages, body copy of roughly 250 characters in three short paragraphs sits
+correctly at **38px, `top 415`**, keeping the card's own left and width. The heading above it
+stays at 69.246px and the title at 121.481px — never shrink those to make room; shorten the copy.
+
 ## API traps — learned the hard way
 
 **`position_element` takes POST-rotation coordinates.** For a 90°-rotated element the stored `top`/`left` you read back are pre-rotation and differ by `(height − width) / 2`.
@@ -348,10 +365,14 @@ never publish his private files to create one.
 ## Decks
 
 - `DAGQ1Ke7cIQ` — קומיקס דיגיטלי — **the design reference**, 18 pages. Never modify.
-- `DAHUWraekK8` — מבוא לאיור ואייקון דיגיטלי | קומיקס דיגיטלי — **the current version**, 12 pages,
-  rebuilt on the new reference
-- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — the old Iron Man-language version it was
-  rebuilt from; keep as the backup
+- `DAHVb7KhQ_E` — איור דרקונים בקומיקס | מתקדמים — **done, 12 pages**, written from scratch on the
+  reference. Every media slot still carries a reference-deck placeholder; the curriculum text is a
+  draft of mine for Tal to correct.
+- `DAHTZQw6jBw` — מבוא לאיור ואייקון דיגיטלי | מהדורת 2026 — **the live one. Tal edits this deck
+  himself in Canva.**
+- `DAHUWraekK8` — מבוא לאיור ואייקון דיגיטלי | קומיקס דיגיטלי — my rebuild of it, abandoned. Tal was
+  working in `DAHTZQw6jBw` the whole time while I edited this one, which is why every fix I saved
+  looked like it had not happened. **Confirm which design id Tal has open before editing anything.**
 - `DAHT3XvFzCc` — כתיבת תסריט לחוברת קומיקס | קומיקס דיגיטלי — **done, 11 pages**, first deck
   built on the new reference. Page 3 is a superseded table of contents awaiting Tal's deletion.
 - `DAHTZhm6Fqc` — earlier partial attempt at the same deck on the old Iron Man language — superseded, Tal can delete
