@@ -271,11 +271,23 @@ lines would come out in the wrong typeface. Line pitch is therefore capped at
 where his four sit at ~150. Scale the icons to match the tighter rhythm rather than
 overlapping them.
 
-**The gold badge behind each icon (`MAEL5Bmn-RI`) cannot be placed at all** — it is a Canva
-library element, and `insert_fill` fails with `A media bundle required to process the request
-was not found in resources.mediaFiles`. His four chapter icons (`MAGOlmkSCxM` `MAGOlgZ1bKw`
-`MAGOliU7hjk` `MAGOlm3_Fu0`) are his own uploads and do insert. Place those, leave the badges,
-and tell Tal — he adds them himself and has said so.
+**A Canva library element inserts only into a design that already contains it.** The gold badge
+`MAEL5Bmn-RI` fails `insert_fill` with `A media bundle required to process the request was not
+found in resources.mediaFiles` — but only while the design has never used it. Once Tal pastes in
+a page that carries it, the asset is in that design's media bundle and `insert_fill` works
+normally. So the reliable route to a page built on library elements is: **ask Tal to paste the
+page in from the deck that has it, then fill it.** That beats rebuilding — it brings the real
+badges, the real chapter icons and the `unsupported` hero image, none of which the API can
+create. Tal's own uploads (`MAGOlmkSCxM` `MAGOlgZ1bKw` `MAGOliU7hjk` `MAGOlm3_Fu0`) insert either
+way.
+
+**Filling a pasted TOC with more chapters than it was built for.** His page has four rows at
+~145px pitch; six chapters need the same pitch in less room. Keep **one** text element (the
+others get deleted — `add_text` cannot set a font), give it the chapters separated by blank
+lines, and set `line_height` so that **two** line boxes make one row: pitch = `2 × font_size ×
+line_height`. At 36px and `line_height 1.736` that is 125px, which fits six rows between the
+title and the page foot. Then align each badge to `row_centre − 62.66` and each icon to
+`row_centre − 83`, at his lefts 1757.05 and 1737.
 
 **Title width is capped at about 13 Hebrew characters** at 121.481px in the 890px box.
 "ההיסטוריה של הקומיקס" overflows; "ההיסטוריה" fits. Push the rest of the phrase into
